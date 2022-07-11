@@ -18,12 +18,12 @@ public class Partition {
 	private ArrayList<MyProcess> processTerminated;
 	private ArrayList<MyProcess> overSize;
 
-	public Partition(String name, int size) {
+	public Partition(String name, int size,Queue<MyProcess> processQueueReady, ArrayList<MyProcess> processes) {
 		
 		this.name = name;
 		this.size = size;
-		this.processesQueue = new ArrayList<>();
-		this.processQueueReady = new Queue<>();
+		this.processesQueue = processes;
+		this.processQueueReady = processQueueReady;
 		this.lockedAndWakeUp = new ArrayList<>();
 		this.processTerminated = new ArrayList<>();
 		executing = new ArrayList<>();
@@ -32,18 +32,18 @@ public class Partition {
 		this.overSize = new ArrayList<>();
 	}
 
-	public boolean addProcess(MyProcess myProcess) {
-		if (search(myProcess.getName()) == null) {
-			if(myProcess.getSize() <= this.size) {				
-				readyAndDespachado.add(new MyProcess(myProcess.getName(), myProcess.getTime(),myProcess.getSize(), myProcess.isLocked()));
-				processQueueReady.push(myProcess);
-			}else {
-				overSize.add(new MyProcess(myProcess.getName(), myProcess.getTime(), myProcess.getSize(), myProcess.isLocked()));
-			}
-			return true;
-		}
-		return false;
-	}
+//	public boolean addProcess(MyProcess myProcess) {
+//		if (search(myProcess.getName()) == null) {
+//			if(myProcess.getSize() <= this.size) {				
+//				readyAndDespachado.add(new MyProcess(myProcess.getName(), myProcess.getTime(),myProcess.getSize(), myProcess.isLocked()));
+//				processQueueReady.push(myProcess);
+//			}else {
+//				overSize.add(new MyProcess(myProcess.getName(), myProcess.getTime(), myProcess.getSize(), myProcess.isLocked()));
+//			}
+//			return true;
+//		}
+//		return false;
+//	}
 
 	/**
 	 * Me avisa si no funciona, xd
@@ -52,80 +52,81 @@ public class Partition {
 	 * @param time
 	 * @param lockedStatus
 	 */
-	public void editProcess(String actualName, String name, int time,int size, boolean lockedStatus) {
-		edit(search(actualName), name, time,size, lockedStatus);
-		edit(searchInList(actualName, processesQueue), name, time,size, lockedStatus);
-	}
+//	public void editProcess(String actualName, String name, int time,int size, boolean lockedStatus) {
+//		edit(search(actualName), name, time,size, lockedStatus);
+//		edit(searchInList(actualName, processesQueue), name, time,size, lockedStatus);
+//	}
+//	
+//	private void edit(MyProcess myProcess, String name, int time,int size, boolean lockedStatus) {
+//		myProcess.setName(name);
+//		myProcess.updateTime(time);
+//		myProcess.setSize(size);
+//		myProcess.setLocked(lockedStatus);
+//	}
 	
-	private void edit(MyProcess myProcess, String name, int time,int size, boolean lockedStatus) {
-		myProcess.setName(name);
-		myProcess.updateTime(time);
-		myProcess.setSize(size);
-		myProcess.setLocked(lockedStatus);
-	}
-	
-	/**
-	 * Eliminar de la cola y de la lista de listos
-	 * @param name
-	 * @return
-	 */
-	public boolean deleteProccess(String name) {
-		boolean isDelete = false;
-		Node<MyProcess> temp = processQueueReady.peek();
-		processesQueue.remove(searchInList(name, processesQueue));
-		if (temp.getData().getName().equals(name)) {
-			processQueueReady.pop();
-			isDelete = true;
-		}else {
-			isDelete = deleteProcess(name, isDelete, temp);
-		}	
-		return isDelete;
-	}
-
-	private boolean deleteProcess(String name, boolean isDelete, Node<MyProcess> temp) {
-		while (temp.getNext() != null) {
-			if (temp.getNext().getData().getName().equals(name)) {
-				temp.setNext(temp.getNext().getNext());
-				isDelete = true;
-			} else {
-				temp = temp.getNext();
-			}
-		}
-		return isDelete;
-	}
-
-	private MyProcess searchInList(String name, ArrayList<MyProcess> myProcesses) {
-		for (MyProcess myProcess : myProcesses) {
-			if (name.equals(myProcess.getName())) {
-				return myProcess;
-			}
-		}
-		return null;
-	}
-	
-	
-	public MyProcess search(String name) {
-		for (MyProcess myProcess : processesQueue) {
-			if(myProcess.getName().equalsIgnoreCase(name)) {
-				return myProcess;
-			}
-		}
-		return null;
-	}
-
-	public void startSimulation() {
-		while (!processQueueReady.isEmpty()) {
-			MyProcess process = processQueueReady.peek().getData();
-//			if(process.getSize() <= this.size) {				
-				valideSystemTimer(process);
-//			}else {
-//				overSize.add(new MyProcess(process.getName(), process.getTime(), process.getSize(), process.isLocked()));
-//				processQueueReady.pop();
+//	/**
+//	 * Eliminar de la cola y de la lista de listos
+//	 * @param name
+//	 * @return
+//	 */
+//	public boolean deleteProccess(String name) {
+//		boolean isDelete = false;
+//		Node<MyProcess> temp = processQueueReady.peek();
+//		processesQueue.remove(searchInList(name, processesQueue));
+//		if (temp.getData().getName().equals(name)) {
+//			processQueueReady.pop();
+//			isDelete = true;
+//		}else {
+//			isDelete = deleteProcess(name, isDelete, temp);
+//		}	
+//		return isDelete;
+//	}
+//
+//	private boolean deleteProcess(String name, boolean isDelete, Node<MyProcess> temp) {
+//		while (temp.getNext() != null) {
+//			if (temp.getNext().getData().getName().equals(name)) {
+//				temp.setNext(temp.getNext().getNext());
+//				isDelete = true;
+//			} else {
+//				temp = temp.getNext();
 //			}
-		}
-	}
+//		}
+//		return isDelete;
+//	}
 
-	private void valideSystemTimer(MyProcess process) {
+//	private MyProcess searchInList(String name, ArrayList<MyProcess> myProcesses) {
+//		for (MyProcess myProcess : myProcesses) {
+//			if (name.equals(myProcess.getName())) {
+//				return myProcess;
+//			}
+//		}
+//		return null;
+//	}
+//	
+//	
+//	public MyProcess search(String name) {
+//		for (MyProcess myProcess : processesQueue) {
+//			if(myProcess.getName().equalsIgnoreCase(name)) {
+//				return myProcess;
+//			}
+//		}
+//		return null;
+//	}
+
+//	public void startSimulation() {
+//		while (!processQueueReady.isEmpty()) {
+//			MyProcess process = processQueueReady.peek().getData();
+////			if(process.getSize() <= this.size) {				
+//				valideSystemTimer(process);
+////			}else {
+////				overSize.add(new MyProcess(process.getName(), process.getTime(), process.getSize(), process.isLocked()));
+////				processQueueReady.pop();
+////			}
+//		}
+//	}
+
+	public void valideSystemTimer(MyProcess process) {
+		readyAndDespachado.add(new MyProcess(process.getName(), (process.getTime()),process.getSize(), process.isLocked()));
 		executing.add(new MyProcess(process.getName(), (process.getTime()-5< 0 ? 0:process.getTime()-5),process.getSize(), process.isLocked()));
 		if ((process.getTime() - 5) > 0) {
 			proccessTimeDiscount(process);
@@ -139,7 +140,8 @@ public class Partition {
 	private void proccessTimeDiscount(MyProcess process) {
 		process.setTime(5);
 		valideLocked(process);
-		readyAndDespachado.add(new MyProcess(process.getName(), process.getTime(),process.getSize(), process.isLocked()));
+		processesQueue.add(new MyProcess(process.getName(), process.getTime(),process.getSize(), process.isLocked()));
+//		readyAndDespachado.add(new MyProcess(process.getName(), process.getTime(),process.getSize(), process.isLocked()));
 		processQueueReady.push(processQueueReady.pop());
 	}
 
@@ -287,5 +289,9 @@ public class Partition {
 			processInfo[i][1] = "Exedio el tamaño de la particion";
 		}
 		return processInfo;
+	}
+
+	public void addNotIngresed(MyProcess myProcess) {
+		overSize.add(myProcess);
 	}
 }
