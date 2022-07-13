@@ -5,10 +5,11 @@ import exceptions.RepeatedNameException;
 import java.util.ArrayList;
 
 
-public class Partition {
+public class Partition implements Comparable<Partition>{
 
 	private String name;
-	private int size;
+	private long size;
+        private long time;
 	private Queue<MyProcess> processQueueReady;
 	private ArrayList<MyProcess> processesQueue;
 	private ArrayList<MyProcess> readyAndDespachado;
@@ -18,10 +19,11 @@ public class Partition {
 	private ArrayList<MyProcess> processTerminated;
 	private ArrayList<MyProcess> overSize;
 
-	public Partition(String name, int size,Queue<MyProcess> processQueueReady, ArrayList<MyProcess> processes) {
+	public Partition(String name, long size,Queue<MyProcess> processQueueReady, ArrayList<MyProcess> processes) {
 		
 		this.name = name;
 		this.size = size;
+                this.time = 0;
 		this.processesQueue = processes;
 		this.processQueueReady = processQueueReady;
 		this.lockedAndWakeUp = new ArrayList<>();
@@ -163,11 +165,11 @@ public class Partition {
 	}
 
 	public void verifyProcessName(String name) throws RepeatedNameException {
-		for (MyProcess myProcess : processesQueue) {
-			if (myProcess.getName().equalsIgnoreCase(name)) {
-				throw new RepeatedNameException(name);
-			}
+            for (MyProcess myProcess : processesQueue) {
+		if (myProcess.getName().equalsIgnoreCase(name)) {
+                    throw new RepeatedNameException(name);
 		}
+            }
 	}
 
 
@@ -255,14 +257,22 @@ public class Partition {
 		this.processesQueue = processesQueue;
 	}
 	
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
 	
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size = size;
 	}
-	
+
+        public long getTime() {
+            return time;    
+        }
+
+        public void setTime(long time) {
+            this.time = time;
+        }
+        
 	public String getName() {
 		return name;
 	}
@@ -294,4 +304,9 @@ public class Partition {
 	public void addNotIngresed(MyProcess myProcess) {
 		overSize.add(myProcess);
 	}
+
+    @Override
+    public int compareTo(Partition o) {
+        return (int)(getTime()-o.getTime());
+    }
 }

@@ -1,13 +1,15 @@
 package models;
 
-public class MyProcess {
+import java.math.BigInteger;
+
+public class MyProcess implements Comparable<MyProcess>{
 
 	private String name;
-	private int size;
-	private double time;
+	private long size;
+	private long time;
 	private boolean locked;
 
-	public MyProcess(String name, double time,int size, boolean locked ) {
+	public MyProcess(String name, long time,long size, boolean locked ) {
 		super();
 		this.name = name;
 		this.time = time;
@@ -23,23 +25,23 @@ public class MyProcess {
 		this.name = name;
 	}
 	
-	public double getTime() {
+	public long getTime() {
 		return time;
 	}
 
-	public void setTime(int time) {
-		this.time = (this.time-time);
+	public void setTime(long time) {
+		this.time = (this.time - time);
 	}
 
-	public void updateTime(int time){
+	public void updateTime(long time){
 		this.time = time;
 	}
 	
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
 	
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size = size;
 	}
 
@@ -50,5 +52,10 @@ public class MyProcess {
 	public void setLocked(boolean locked) {
 		this.locked = locked;
 	}
+
+    @Override
+    public int compareTo(MyProcess o) {
+        return (int) (getTime() - o.getTime());
+    }
 	
 }
