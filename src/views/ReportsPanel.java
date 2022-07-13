@@ -13,7 +13,7 @@ import models.MyProcess;
 public class ReportsPanel extends JPanel {
 
     private static final String[] COLUMNS = {"Nombre", "Tiempo", "Tamaño", "Bloqueo"};
-     private static final String[] TERMINED_COLUMNS = {"Nombre", "Tiempo", "Tamaño", "Bloqueo"};
+     private static final String[] TERMINED_COLUMNS = {"Nombre", "Tiempo"};
     private static final String[] OVER_SIZE_COLUMNS = {"Nombre", "Descripcion"};
     private static final String NEW_SIMULATION_BTN_TXT = "Nueva simulacion";
     private static final Color BLUE_COLOR = Color.decode("#2980B9");

@@ -147,7 +147,7 @@ public class AddProcessPanel extends MyGridPanel{
         processTimeTxt.setText(time);
         processSizeTxt.setText(size);
         isBlockedCb.setSelected(isLocked);
-        addBtn.setName(addBtn.getName() + "," + name);
+        addBtn.setName(name);
     }
 
     public boolean getIsBlocked(){

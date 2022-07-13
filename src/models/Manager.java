@@ -82,7 +82,9 @@ public class Manager {
 
     private MyProcess searchInList(String name, ArrayList<MyProcess> myProcesses) {
         for (MyProcess myProcess : myProcesses) {
-            if (name.equals(myProcess.getName())) {
+            System.out.println("name list: " + myProcess.getName());
+            if (name.equalsIgnoreCase(myProcess.getName())) {
+                System.out.println("name: " + name);
                 return myProcess;
             }
         }
@@ -90,9 +92,12 @@ public class Manager {
     }
 
     public MyProcess search(String name) {
-        for (MyProcess myProcess : processes) {
-            if (myProcess.getName().equalsIgnoreCase(name)) {
-                return myProcess;
+        Node<MyProcess> temp = processQueueReady.peek();
+        while (temp != null) {
+            if (temp.getData().getName().equals(name)) {
+                return temp.getData();
+            } else {
+                temp = temp.getNext();
             }
         }
         return null;
@@ -136,8 +141,8 @@ public class Manager {
     }
 
     public void initSimulation() {
+        addToTerminatedList();
         int position = 0;
-        processesTermined = new ArrayList<>(processes);
         while (!processQueueReady.isEmpty()) {
             MyProcess process = processQueueReady.peek().getData();
             int count = 0;
@@ -165,6 +170,22 @@ public class Manager {
         }
         //Collections.sort(partitions);
         Collections.sort(processesTermined);
+    }
+
+    private void addToTerminatedList() {
+        long size = 0;
+        processesTermined = new ArrayList<>();
+        for (Partition partition : partitions) {
+            if (partition.getSize() > size) {
+                size = partition.getSize();
+            }
+        }
+
+        for (MyProcess p : processes) {
+            if (p.getSize() <= size) {
+                processesTermined.add(p);
+            }
+        }
     }
 
     public ArrayList<Partition> getPartitions() {

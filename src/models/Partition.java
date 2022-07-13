@@ -270,7 +270,7 @@ public class Partition implements Comparable<Partition>{
         }
 
         public void setTime(long time) {
-            this.time = time;
+            this.time += time;
         }
         
 	public String getName() {

@@ -216,9 +216,12 @@ public class Presenter implements ActionListener{
            if(!actualName.equals(editProcessDialog.getProcessName())){
                manager.verifyProcessName(editProcessDialog.getProcessName());
            }
+           System.out.println("acutual name: " + actualName);
+           System.out.println("name to edit: " + editProcessDialog.getProcessName());
            manager.editProcess(actualName, editProcessDialog.getProcessName(), editProcessDialog.getProcessTime(), 
                                 editProcessDialog.getProcessSize(), editProcessDialog.getIsBlocked());
            mainFrame.updateProcesses(manager.getProcesses());
+           editProcessDialog.dispose();
        }catch(EmptyProcessNameException | RepeatedNameException | EmptyProcessSizeException | 
                EmptyProcessTimeException | InvalidSizeException | InvalidTimeException ex){
            JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
